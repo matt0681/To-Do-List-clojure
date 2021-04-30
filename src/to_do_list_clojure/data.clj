@@ -6,14 +6,14 @@
 
 (ns to-do-list-clojure.data
   (:require [clojure.string :as str]))
-
+ 
 
 ;; The main database for storing to-do list data.
 ;; It is a map where the date is keyed to vectors containing
 ;; entries for those dates.
 (def main-data {})
 
- 
+
 (defn wipe-main-data
   "Erases all data in main-list.
    Returns main-list"
