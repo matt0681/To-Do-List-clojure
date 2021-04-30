@@ -12,9 +12,7 @@
 (defn -main
   [& Args]
 
-  (println "test")
-
   ;; Creating the GUI
-  ;(gui/create-GUI)
+  (gui/create-GUI)
 
   )

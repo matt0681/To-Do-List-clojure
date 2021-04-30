@@ -6,7 +6,7 @@
 
 (ns to-do-list-clojure.data
   (:require [clojure.string :as str]))
- 
+
 
 ;; The main database for storing to-do list data.
 ;; It is a map where the date is keyed to vectors containing

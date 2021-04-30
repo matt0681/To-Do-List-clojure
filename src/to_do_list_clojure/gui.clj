@@ -25,10 +25,7 @@
            :width 640
            :height 480
            :resizable? true))
-
-
-
-
+  
   (-> main-frame show!))
 
 
