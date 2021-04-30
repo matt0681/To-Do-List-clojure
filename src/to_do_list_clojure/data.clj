@@ -13,7 +13,7 @@
 ;; entries for those dates.
 (def main-data {})
 
-
+ 
 (defn wipe-main-data
   "Erases all data in main-list.
    Returns main-list"
