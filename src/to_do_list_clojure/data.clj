@@ -30,6 +30,11 @@
     (println date)))
 
 
+(defn millis-to-date
+  ""
+  [date-millis]
+  )
+
 (defn date-to-millis
   "Converts a date string of format 'mm/dd/yyyy'
    into it's equivalent milliseconds since the epoch."
@@ -89,4 +94,14 @@
   [date-str]
   (let [date-millis (first (keys (format-date date-str)))]
     (get main-data date-millis)))
+
+(defn get-dates-string
+  "Returns all the dates in main-data in string format."
+  []
+  (map millis-to-date (keys main-data)))
+
+(defn get-dates-millis
+  "Returns all the dates in main-data in millis format."
+  []
+  (keys main-data))
 
