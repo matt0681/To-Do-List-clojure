@@ -11,27 +11,76 @@
                         JLabel
                         JList
                         JButton
-                        JFrame
-                        GroupLayout)
+                        JFrame)
            (java.awt Font
-                     Color)))
+                     Color
+                     GridBagConstraints
+                     GridBagLayout
+                     Insets)))
+
+;; The Main Frame of the GUI
+(def primary-frame
+  (doto (new JFrame)
+    (.setTitle "Lad's To-Do-List!")
+    (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
+    (.setLayout (new GridBagLayout))))
+
+;; Initializes all the Data
+(defn initialize
+  ""
+  [frame]
+
+  (def date-list-data
+    (into-array String (vec (db/get-dates-string))))
+
+  (def date-list
+    (doto (new JList date-list-data)))
+
+  (def date-scroll-pane
+    (doto (new JScrollPane)
+      (.setViewportView date-list)))
+
+  (def date-scroll-pane-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 2)
+      (set! (. grid-bag -gridy) 1)
+      (set! (. grid-bag -gridwidth) 3)
+      (set! (. grid-bag -gridheight) 3)
+      (set! (. grid-bag -fill) GridBagConstraints/BOTH)
+      (set! (. grid-bag -ipadx) 72)
+      (set! (. grid-bag -ipady) 295)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -weightx) 1.0)
+      (set! (. grid-bag -weighty) 1.0)
+      (set! (. grid-bag -insets) (new Insets 6 18 0 0))
+      grid-bag))
+
+  (doto frame
+    (.add date-scroll-pane date-scroll-pane-grid-bag))
+  )
 
 
-;; Initializing some components.
-(def date-list-data
-  (into-array String (vec (db/get-dates-string))))
 
-(def date-list
-  (doto (new JList date-list-data)))
-
-(def date-scroll-pane
-  (doto (new JScrollPane)
-    (.setViewportView date-list)))
 
 (def entry-list-label
   (doto (new JLabel)
     (.setFont (new Font "Segoe UI" 1 18))
     (.setText "Entries")))
+
+(def grid-bag-constraints
+  (let [grid-bag (new GridBagConstraints)]
+    (set! (. grid-bag -gridx) 2)
+    (set! (. grid-bag -gridy) 1)
+    (set! (. grid-bag -gridwidth) 3)
+    (set! (. grid-bag -gridheight) 3)
+    (set! (. grid-bag -fill) GridBagConstraints/BOTH)
+    (set! (. grid-bag -ipadx) 72)
+    (set! (. grid-bag -ipady) 295)
+    (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+    (set! (. grid-bag -weightx) 1.0)
+    (set! (. grid-bag -weighty) 1.0)
+    (set! (. grid-bag -insets) (new Insets 6 18 0 0))
+    grid-bag))
 
 (def date-list-label
   (doto (new JLabel)
@@ -74,18 +123,8 @@
     (.setFont (new Font "Segoe UI" 1 24))
     (.setText "To-Do List")))
 
-;; Creating the Layout / Positioning
-
-
-(def test-label (new JLabel))
-;; Initializes the main frame.
-(def primary-frame
-  (doto (new JFrame)
-    (.setTitle "Lad's To-Do-List!")
-    (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
-    (.setLayout primary-layout)))
 
 ;; Run the gui
 (defn run []
-  (setup-primary-layout)
+  (initialize primary-frame)
   (doto primary-frame (.pack) (.setVisible true)))
