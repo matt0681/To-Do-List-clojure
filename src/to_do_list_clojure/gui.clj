@@ -25,21 +25,31 @@
     (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
     (.setLayout (new GridBagLayout))))
 
-;; Initializes all the Data
+;;;----------------------------------------;;;
+;;; Function to Initializes all components ;;;
+;;;----------------------------------------;;;
 (defn initialize
-  ""
+  "Initializes all the components and adds them to the frame."
   [frame]
 
+  ;;;-------------------------------------------------;;;
+  ;;; Date List Data, Label, Constraints, Scroll-Pane ;;;
+  ;;;-------------------------------------------------;;;
+
+  ;; Gets the data for the dates from the data.clj file
   (def date-list-data
     (into-array String (vec (db/get-dates-string))))
 
+  ;; Creates a list component for the dates
   (def date-list
     (doto (new JList date-list-data)))
 
+  ;; Creates a scroll pane component for the dates
   (def date-scroll-pane
     (doto (new JScrollPane)
       (.setViewportView date-list)))
 
+  ;; Creates the Grid Bag Constraints for the date scroll component
   (def date-scroll-pane-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 2)
@@ -55,31 +65,17 @@
       (set! (. grid-bag -insets) (new Insets 6 18 0 0))
       grid-bag))
 
+  ;; Adds the dates scroll pane and the grid bag constraints to the frame
   (doto frame
     (.add date-scroll-pane date-scroll-pane-grid-bag))
 
-  (def entry-list-label
-    (doto (new JLabel)
-      (.setFont (new Font "Segoe UI" 1 18))
-      (.setText "Entries")))
-
-  (def entry-list-label-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 6)
-      (set! (. grid-bag -gridy) 0)
-      (set! (. grid-bag -ipadx) 8)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 11 0 0))
-      grid-bag))
-
-  (doto frame
-    (.add entry-list-label entry-list-label-grid-bag))
-
+  ;; Creates a label for the date list
   (def date-list-label
     (doto (new JLabel)
       (.setFont (new Font "Segoe UI" 1 18))
       (.setText "Date")))
 
+  ;; Creates grid-bag constraints for the date list label
   (def date-list-label-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 2)
@@ -89,9 +85,71 @@
       (set! (. grid-bag -insets) (new Insets 10 39 0 0))
       grid-bag))
 
+  ;; Adds the
   (doto frame
     (.add date-list-label date-list-label-grid-bag))
 
+
+  ;;;--------------------------------------------------;;;
+  ;;; Entry List Data, Label, Constraints, Scroll-Pane ;;;
+  ;;;--------------------------------------------------;;;
+
+  ;; Creates a label component for the entries list
+  (def entry-list-label
+    (doto (new JLabel)
+      (.setFont (new Font "Segoe UI" 1 18))
+      (.setText "Entries")))
+
+  ;; Creates the grid bag constraints for the entry list label
+  (def entry-list-label-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 6)
+      (set! (. grid-bag -gridy) 0)
+      (set! (. grid-bag -ipadx) 8)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 11 0 0))
+      grid-bag))
+
+  ;; Adds the entry list label and it's constraints
+  (doto frame
+    (.add entry-list-label entry-list-label-grid-bag))
+
+  ;;
+  (def entries-list-data
+    (into-array String ["One" "Two" "Three" "Four"]))
+
+  ;;
+  (def entries-list
+    (doto (new JList entries-list-data)))
+
+  ;; Entries List Model? Putting Data in it.
+
+  ;;
+  (def entries-scroll-pane
+    (doto (new JScrollPane)
+      (.setViewportView entries-list)))
+
+  ;;
+  (def entries-scroll-pane-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 5)
+      (set! (. grid-bag -gridy) 1)
+      (set! (. grid-bag -gridwidth) 3)
+      (set! (. grid-bag -gridheight) 3)
+      (set! (. grid-bag -fill) GridBagConstraints/BOTH)
+      (set! (. grid-bag -ipadx) 523)
+      (set! (. grid-bag -ipady) 295)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -weightx) 1.0)
+      (set! (. grid-bag -weighty) 1.0)
+      (set! (. grid-bag -insets) (new Insets 65 20 0 0))
+      grid-bag))
+
+  ;;
+  (doto frame
+    (.add entries-scroll-pane entries-scroll-pane-grid-bag))
+
+  ;;
   (def select-date-btn
     (doto (new JButton)
       (.setFont (new Font "Segoe UI" 0 12))
@@ -99,6 +157,7 @@
 
   ;; Button Events
 
+  ;;
   (def select-date-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 2)
@@ -109,9 +168,11 @@
       (set! (. grid-bag -insets) (new Insets 10 28 10 0))
       grid-bag))
 
+  ;;
   (doto frame
     (.add select-date-btn select-date-grid-bag))
 
+  ;;
   (def tips-text-pane
     (doto (new JTextPane)
       (.setEditable false)
@@ -119,10 +180,12 @@
       (.setFont (new Font "Segoe UI" 0 12))
       (.setText "TIPS:")))
 
+  ;;
   (def tips-scroll-pane
     (doto (new JScrollPane)
       (.setViewportView tips-text-pane)))
 
+  ;;
   (def tips-text-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 0)
@@ -137,20 +200,45 @@
       (set! (. grid-bag -insets) (new Insets 65 20 0 0))
       grid-bag))
 
+  ;;
   (doto frame
     (.add tips-scroll-pane tips-text-grid-bag))
 
+  ;;
   (def entries-list-data
     (into-array String ["One" "Two" "Three" "Four"]))
 
+  ;;
   (def entries-list
     (doto (new JList entries-list-data)))
 
-  ;; 
+  ;; Entries List Model? Putting Data in it.
 
+  ;;
   (def entries-scroll-pane
     (doto (new JScrollPane)
       (.setViewportView entries-list)))
+
+  ;;
+  (def entries-scroll-pane-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 5)
+      (set! (. grid-bag -gridy) 1)
+      (set! (. grid-bag -gridwidth) 3)
+      (set! (. grid-bag -gridheight) 3)
+      (set! (. grid-bag -fill) GridBagConstraints/BOTH)
+      (set! (. grid-bag -ipadx) 523)
+      (set! (. grid-bag -ipady) 295)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -weightx) 1.0)
+      (set! (. grid-bag -weighty) 1.0)
+      (set! (. grid-bag -insets) (new Insets 65 20 0 0))
+      grid-bag))
+
+  ;;
+  (doto frame
+    (.add entries-scroll-pane entries-scroll-pane-grid-bag))
+
 
 
   )
