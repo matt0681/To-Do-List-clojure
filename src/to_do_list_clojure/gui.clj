@@ -91,37 +91,71 @@
 
   (doto frame
     (.add date-list-label date-list-label-grid-bag))
-  
+
+  (def select-date-btn
+    (doto (new JButton)
+      (.setFont (new Font "Segoe UI" 0 12))
+      (.setText "Select")))
+
+  ;; Button Events
+
+  (def select-date-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 2)
+      (set! (. grid-bag -gridy) 4)
+      (set! (. grid-bag -gridwidth) 2)
+      (set! (. grid-bag -ipadx) 4)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 28 10 0))
+      grid-bag))
+
+  (doto frame
+    (.add select-date-btn select-date-grid-bag))
+
+  (def tips-text-pane
+    (doto (new JTextPane)
+      (.setEditable false)
+      (.setBackground (new Color 240 240 240))
+      (.setFont (new Font "Segoe UI" 0 12))
+      (.setText "TIPS:")))
+
+  (def tips-scroll-pane
+    (doto (new JScrollPane)
+      (.setViewportView tips-text-pane)))
+
+  (def tips-text-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 0)
+      (set! (. grid-bag -gridy) 2)
+      (set! (. grid-bag -gridwidth) 2)
+      (set! (. grid-bag -fill) GridBagConstraints/BOTH)
+      (set! (. grid-bag -ipadx) 124)
+      (set! (. grid-bag -ipady) 78)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -weightx) 1.0)
+      (set! (. grid-bag -weighty) 1.0)
+      (set! (. grid-bag -insets) (new Insets 65 20 0 0))
+      grid-bag))
+
+  (doto frame
+    (.add tips-scroll-pane tips-text-grid-bag))
+
+  (def entries-list-data
+    (into-array String ["One" "Two" "Three" "Four"]))
+
+  (def entries-list
+    (doto (new JList entries-list-data)))
+
+  ;; 
+
+  (def entries-scroll-pane
+    (doto (new JScrollPane)
+      (.setViewportView entries-list)))
 
 
   )
 
 
-(def select-date-btn
-  (doto (new JButton)
-    (.setFont (new Font "Segoe UI" 0 12))
-    (.setText "Select")))
-
-(def tips-text-pane
-  (doto (new JTextPane)
-    (.setEditable false)
-    (.setBackground (new Color 240 240 240))
-    (.setFont (new Font "Segoe UI" 0 12))
-    (.setText "TIPS:")))
-
-(def tips-scroll-pane
-  (doto (new JScrollPane)
-    (.setViewportView tips-text-pane)))
-
-(def entries-list-data
-  (into-array String ["One" "Two" "Three" "Four"]))
-
-(def entries-list
-  (doto (new JList entries-list-data)))
-
-(def entries-scroll-pane
-  (doto (new JScrollPane)
-    (.setViewportView entries-list)))
 
 (def completed-btn
   (doto (new JButton)
