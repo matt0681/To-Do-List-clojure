@@ -57,35 +57,45 @@
 
   (doto frame
     (.add date-scroll-pane date-scroll-pane-grid-bag))
+
+  (def entry-list-label
+    (doto (new JLabel)
+      (.setFont (new Font "Segoe UI" 1 18))
+      (.setText "Entries")))
+
+  (def entry-list-label-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 6)
+      (set! (. grid-bag -gridy) 0)
+      (set! (. grid-bag -ipadx) 8)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 11 0 0))
+      grid-bag))
+
+  (doto frame
+    (.add entry-list-label entry-list-label-grid-bag))
+
+  (def date-list-label
+    (doto (new JLabel)
+      (.setFont (new Font "Segoe UI" 1 18))
+      (.setText "Date")))
+
+  (def date-list-label-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 2)
+      (set! (. grid-bag -gridy) 0)
+      (set! (. grid-bag -ipadx) 11)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 39 0 0))
+      grid-bag))
+
+  (doto frame
+    (.add date-list-label date-list-label-grid-bag))
+  
+
+
   )
 
-
-
-
-(def entry-list-label
-  (doto (new JLabel)
-    (.setFont (new Font "Segoe UI" 1 18))
-    (.setText "Entries")))
-
-(def grid-bag-constraints
-  (let [grid-bag (new GridBagConstraints)]
-    (set! (. grid-bag -gridx) 2)
-    (set! (. grid-bag -gridy) 1)
-    (set! (. grid-bag -gridwidth) 3)
-    (set! (. grid-bag -gridheight) 3)
-    (set! (. grid-bag -fill) GridBagConstraints/BOTH)
-    (set! (. grid-bag -ipadx) 72)
-    (set! (. grid-bag -ipady) 295)
-    (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-    (set! (. grid-bag -weightx) 1.0)
-    (set! (. grid-bag -weighty) 1.0)
-    (set! (. grid-bag -insets) (new Insets 6 18 0 0))
-    grid-bag))
-
-(def date-list-label
-  (doto (new JLabel)
-    (.setFont (new Font "Segoe UI" 1 18))
-    (.setText "Date")))
 
 (def select-date-btn
   (doto (new JButton)
