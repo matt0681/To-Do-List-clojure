@@ -38,11 +38,13 @@
 
   ;; Gets the data for the dates from the data.clj file
   (def date-list-data
-    (into-array String (vec (db/get-dates-string))))
+    (into-array String ["One" "Two" "Three" "Four"]))
 
   ;; Creates a list component for the dates
   (def date-list
     (doto (new JList date-list-data)))
+
+  ;; Date list model?
 
   ;; Creates a scroll pane component for the dates
   (def date-scroll-pane
@@ -85,7 +87,7 @@
       (set! (. grid-bag -insets) (new Insets 10 39 0 0))
       grid-bag))
 
-  ;; Adds the
+  ;; Adds the date list label and date list label constraints to the frame
   (doto frame
     (.add date-list-label date-list-label-grid-bag))
 
@@ -114,22 +116,22 @@
   (doto frame
     (.add entry-list-label entry-list-label-grid-bag))
 
-  ;;
+  ;; Creates data to go into the entries list
   (def entries-list-data
     (into-array String ["One" "Two" "Three" "Four"]))
 
-  ;;
+  ;; Creates a list component for the entries list
   (def entries-list
     (doto (new JList entries-list-data)))
 
-  ;; Entries List Model? Putting Data in it.
+  ;; Entries List Model?
 
-  ;;
+  ;; Creates a scroll pane for the entries
   (def entries-scroll-pane
     (doto (new JScrollPane)
       (.setViewportView entries-list)))
 
-  ;;
+  ;; Creates constraints for the entries scroll pane
   (def entries-scroll-pane-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 5)
@@ -145,19 +147,24 @@
       (set! (. grid-bag -insets) (new Insets 65 20 0 0))
       grid-bag))
 
-  ;;
+  ;; Adds the entries scroll pane and scroll pane constraints to the frame.
   (doto frame
     (.add entries-scroll-pane entries-scroll-pane-grid-bag))
 
-  ;;
+
+  ;;;--------------------------------------------------;;;
+  ;;; Select date and completed buttons                ;;;
+  ;;;--------------------------------------------------;;;
+
+  ;; Creates a button for selecting the date
   (def select-date-btn
     (doto (new JButton)
       (.setFont (new Font "Segoe UI" 0 12))
       (.setText "Select")))
 
-  ;; Button Events
+  ;; Button Events ?
 
-  ;;
+  ;; Creates constraints for the select button
   (def select-date-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 2)
@@ -168,9 +175,34 @@
       (set! (. grid-bag -insets) (new Insets 10 28 10 0))
       grid-bag))
 
-  ;;
+  ;; Adds the select date button and it's constraints to the frame.
   (doto frame
     (.add select-date-btn select-date-grid-bag))
+
+  ;; Creates a button for indicating completed entries
+  (def completed-btn
+    (doto (new JButton)
+      (.setFont (new Font "Segoe UI" 0 12))
+      (.setText "Mark Complete")))
+
+  ;; Button events ?
+
+  ;; Completed Button Constraints
+  (def completed-btn-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 5)
+      (set! (. grid-bag -gridy) 4)
+      ;(set! (. grid-bag -gridwidth) 2)
+      (set! (. grid-bag -ipadx) 11)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 29 10 0))
+      grid-bag))
+
+
+  ;; Adds the completed button and it's constraints to the frame.
+  (doto frame
+    (.add completed-btn completed-btn-grid-bag))
+
 
   ;;
   (def tips-text-pane
@@ -212,7 +244,7 @@
   (def entries-list
     (doto (new JList entries-list-data)))
 
-  ;; Entries List Model? Putting Data in it.
+  ;; Entries List Model?
 
   ;;
   (def entries-scroll-pane
@@ -240,20 +272,12 @@
     (.add entries-scroll-pane entries-scroll-pane-grid-bag))
 
 
+  (def title-label
+    (doto (new JLabel)
+      (.setFont (new Font "Segoe UI" 1 24))
+      (.setText "To-Do List")))
 
   )
-
-
-
-(def completed-btn
-  (doto (new JButton)
-    (.setFont (new Font "Segoe UI" 0 12))
-    (.setText "Mark Complete")))
-
-(def title-label
-  (doto (new JLabel)
-    (.setFont (new Font "Segoe UI" 1 24))
-    (.setText "To-Do List")))
 
 
 ;; Run the gui
