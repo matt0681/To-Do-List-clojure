@@ -24,6 +24,9 @@
            (javax.swing.border BevelBorder)
            (java.awt.event ActionListener)))
 
+;; Variables
+(def date-list (new JList))
+
 ;;;----------------------------------------------------------;;;
 ;;; Creates a primary-frame for the to-do list application   ;;;
 ;;;----------------------------------------------------------;;;
@@ -41,7 +44,16 @@
   )
 
 (defn select-date-action []
-  )
+  (let [selected-date (.getSelectedValue date-list)
+        entries (into-array String (vec (map last (db/get-entries selected-date))))]
+    (doto date-list
+      (.addElement entries))))
+
+;;
+;; You need to go in an add a list model to the date-list so that
+;; you can add and remove items easily. Right now date-list is not
+;; mutable.
+;;
 
 (defn mark-complete-action []
   )
@@ -138,7 +150,7 @@
 
   ;; Creates data to go into the entries list
   (def entries-list-data
-    (into-array String ["One" "Two" "Three" "Four"]))
+    (into-array String [""]))
 
   ;; Creates a list component for the entries list
   (def entries-list

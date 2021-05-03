@@ -97,7 +97,8 @@
 
 
 (defn get-entries
-  "Returns all the entries for a particular date."
+  "Returns all the entries for a particular date.
+   Returns as [[importance 'subject'] [importance 'subject'] ...]"
   [date-str]
   (let [date-millis (first (keys (format-date date-str)))]
     (get main-data date-millis)))
