@@ -14,13 +14,15 @@
                         JList
                         JButton
                         JFrame
-                        BorderFactory JTextField)
+                        BorderFactory
+                        JTextField JOptionPane)
            (java.awt Font
                      Color
                      GridBagConstraints
                      GridBagLayout
                      Insets)
-           (javax.swing.border BevelBorder)))
+           (javax.swing.border BevelBorder)
+           (java.awt.event ActionListener)))
 
 ;;;----------------------------------------------------------;;;
 ;;; Creates a primary-frame for the to-do list application   ;;;
@@ -30,6 +32,19 @@
     (.setTitle "Lad's To-Do-List!")
     (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
     (.setLayout (new GridBagLayout))))
+
+;; Action functions for each button.
+(defn add-entry-action []
+  )
+
+(defn delete-entry-action []
+  )
+
+(defn select-date-action []
+  )
+
+(defn mark-complete-action []
+  )
 
 
 ;;;----------------------------------------;;;
@@ -45,7 +60,7 @@
 
   ;; Gets the data for the dates from the data.clj file
   (def date-list-data
-    (into-array String ["One" "Two" "Three" "Four"]))
+    (into-array String (vec (db/get-dates-string))))
 
   ;; Creates a list component for the dates
   (def date-list
@@ -210,8 +225,6 @@
       (.setFont (new Font "Segoe UI" 0 12))
       (.setText "Add Entry")))
 
-  ;; Need to add Button Action Listener!
-
   ;; Add Entry Button Constraints
   (def add-entry-btn-grid-bag
     (let [grid-bag (new GridBagConstraints)]
@@ -358,6 +371,30 @@
   (doto frame
     (.add entry-input-text-field entry-input-grid-bag))
 
+
+  ;; Creates action listeners for each of the buttons
+  (def add-entry-action-listener
+    (proxy [ActionListener] []
+      (actionPerformed [event] (add-entry-action))))
+
+  (def delete-entry-action-listener
+    (proxy [ActionListener] []
+      (actionPerformed [event] (delete-entry-action))))
+
+  (def select-date-action-listener
+    (proxy [ActionListener] []
+      (actionPerformed [event] (select-date-action))))
+
+  (def mark-complete-action-listener
+    (proxy [ActionListener] []
+      (actionPerformed [event] (mark-complete-action))))
+
+
+  ;; Adds action listeners to each of the buttons
+  (.addActionListener add-entry-btn add-entry-action-listener)
+  (.addActionListener delete-entry-btn delete-entry-action-listener)
+  (.addActionListener select-date-btn select-date-action-listener)
+  (.addActionListener completed-btn mark-complete-action-listener)
 
   ) ;; End of initialize function.
 

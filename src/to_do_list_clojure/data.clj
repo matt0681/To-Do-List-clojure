@@ -5,7 +5,9 @@
 ;;;;----------------------------------------------------------;;;;
 
 (ns to-do-list-clojure.data
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str])
+  (:import (java.util Date)
+           (java.text SimpleDateFormat)))
 
 
 ;; The main database for storing to-do list data.
@@ -31,15 +33,20 @@
 
 
 (defn millis-to-date
-  ""
+  "Converts a date in milliseconds to a string of
+   format 'mm/dd/yyyy'"
   [date-millis]
-  )
+  (let [date-obj (new Date date-millis)
+        sdf (SimpleDateFormat. "MM/dd/yyyy")
+        date-str (.format sdf date-obj)]
+    date-str))
+
 
 (defn date-to-millis
   "Converts a date string of format 'mm/dd/yyyy'
    into it's equivalent milliseconds since the epoch."
   [date-str]
-  (let [sdf (java.text.SimpleDateFormat. "MM/dd/yyyy")
+  (let [sdf (SimpleDateFormat. "MM/dd/yyyy")
         date (.parse sdf date-str)
         millis (.getTime date)]
     millis))
@@ -95,13 +102,10 @@
   (let [date-millis (first (keys (format-date date-str)))]
     (get main-data date-millis)))
 
+
 (defn get-dates-string
   "Returns all the dates in main-data in string format."
   []
   (map millis-to-date (keys main-data)))
 
-(defn get-dates-millis
-  "Returns all the dates in main-data in millis format."
-  []
-  (keys main-data))
 
