@@ -259,8 +259,7 @@
       (.setBackground (new Color 240 240 240))
       (.setFont (new Font "Segoe UI" 0 12))
       (.setText "TIPS:")
-      (.setBorder (doto BorderFactory
-                    (. createBevelBorder BevelBorder/RAISED)))))
+      (.setBorder (BorderFactory/createBevelBorder BevelBorder/RAISED))))
 
   ;; Creates a scroll pane for the tips text pane
   (def tips-scroll-pane
@@ -317,15 +316,47 @@
   ;;; Date input and entry input text fields and constraints  ;;;
   ;;;---------------------------------------------------------;;;
 
+  ;; Creates a date input text field
   (def date-input-text-field
     (doto (new JTextField)
       (.setText "mm/dd/yyyy")))
 
+  ;; Creates constraints for the date input text field
   (def date-input-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 2)
       (set! (. grid-bag -gridy) 4)
-      ))
+      (set! (. grid-bag -gridwidth) 2)
+      (set! (. grid-bag -ipadx) 72)
+      (set! (. grid-bag -ipady) 10)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 18 0 0))
+      grid-bag))
+
+  ;; Adds the date input text field and it's constraints to the frame
+  (doto frame
+    (.add date-input-text-field date-input-grid-bag))
+
+  ;; Creates an entry input text field
+  (def entry-input-text-field
+    (doto (new JTextField)
+      (.setText "Fold the laundry.")))
+
+  ;; Creates constraints for the entry input text field
+  (def entry-input-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 4)
+      (set! (. grid-bag -gridy) 4)
+      (set! (. grid-bag -gridwidth) 5)
+      (set! (. grid-bag -ipadx) 426)
+      (set! (. grid-bag -ipady) 10)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 18 0 16))
+      grid-bag))
+
+  ;; Adds the entry input text field and it's constraints to the frame
+  (doto frame
+    (.add entry-input-text-field entry-input-grid-bag))
 
 
   ) ;; End of initialize function.
