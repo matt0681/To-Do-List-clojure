@@ -2,6 +2,8 @@
 ;;;;     Matthew Lad                                          ;;;;
 ;;;;     To-Do List Application                               ;;;;
 ;;;;     4/29/2021                                            ;;;;
+;;;;                                                          ;;;;
+;;;;     This file creates the GUI.                           ;;;;
 ;;;;----------------------------------------------------------;;;;
 
 (ns to-do-list-clojure.gui
@@ -18,17 +20,20 @@
                      GridBagLayout
                      Insets)))
 
-;; The Main Frame of the GUI
+;;;----------------------------------------------------------;;;
+;;; Creates a primary-frame for the to-do list application   ;;;
+;;;----------------------------------------------------------;;;
 (def primary-frame
   (doto (new JFrame)
     (.setTitle "Lad's To-Do-List!")
     (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
     (.setLayout (new GridBagLayout))))
 
+
 ;;;----------------------------------------;;;
 ;;; Function to Initializes all components ;;;
 ;;;----------------------------------------;;;
-(defn initialize
+(defn initialize-primary-frame
   "Initializes all the components and adds them to the frame."
   [frame]
 
@@ -144,7 +149,7 @@
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
       (set! (. grid-bag -weightx) 1.0)
       (set! (. grid-bag -weighty) 1.0)
-      (set! (. grid-bag -insets) (new Insets 65 20 0 0))
+      (set! (. grid-bag -insets) (new Insets 6 19 0 31))
       grid-bag))
 
   ;; Adds the entries scroll pane and scroll pane constraints to the frame.
@@ -153,7 +158,7 @@
 
 
   ;;;--------------------------------------------------;;;
-  ;;; Select date and completed buttons                ;;;
+  ;;; Select date, completed, add, and delete buttons  ;;;
   ;;;--------------------------------------------------;;;
 
   ;; Creates a button for selecting the date
@@ -192,19 +197,65 @@
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 5)
       (set! (. grid-bag -gridy) 4)
-      ;(set! (. grid-bag -gridwidth) 2)
       (set! (. grid-bag -ipadx) 11)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
       (set! (. grid-bag -insets) (new Insets 10 29 10 0))
       grid-bag))
 
-
   ;; Adds the completed button and it's constraints to the frame.
   (doto frame
     (.add completed-btn completed-btn-grid-bag))
 
+  ;; Creates a button for adding entries
+  (def add-entry-btn
+    (doto (new JButton)
+      (.setFont (new Font "Segoe UI" 0 12))
+      (.setText "Add Entry")))
 
-  ;;
+  ;; Button events ?
+
+  ;; Add Entry Button Constraints
+  (def add-entry-btn-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 5)
+      (set! (. grid-bag -gridy) 3)
+      (set! (. grid-bag -gridwidth) 2)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 26 10 0))
+      grid-bag))
+
+  ;; Adds the add-entry button and it's constraints to the frame.
+  (doto frame
+    (.add add-entry-btn add-entry-btn-grid-bag))
+
+  ;; Creates a button for deleting entries
+  (def delete-entry-btn
+    (doto (new JButton)
+      (.setFont (new Font "Segoe UI" 0 12))
+      (.setText "Delete Entry")))
+
+  ;; Button events ?
+
+  ;; delete entries Button Constraints
+  (def delete-entry-btn-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 5)
+      (set! (. grid-bag -gridy) 4)
+      (set! (. grid-bag -ipadx) 11)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 29 10 0))
+      grid-bag))
+
+  ;; Adds the delete-entry button and it's constraints to the frame.
+  (doto frame
+    (.add delete-entry-btn delete-entry-btn-grid-bag))
+
+
+  ;;;--------------------------------------------------;;;
+  ;;; Tips Text-Pane, scroll-pane, and constraints     ;;;
+  ;;;--------------------------------------------------;;;
+
+  ;; Creates a tips text-pane component
   (def tips-text-pane
     (doto (new JTextPane)
       (.setEditable false)
@@ -212,12 +263,12 @@
       (.setFont (new Font "Segoe UI" 0 12))
       (.setText "TIPS:")))
 
-  ;;
+  ;; Creates a scroll pane for the tips text pane
   (def tips-scroll-pane
     (doto (new JScrollPane)
       (.setViewportView tips-text-pane)))
 
-  ;;
+  ;; Creates constraints for the tips text pane
   (def tips-text-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 0)
@@ -232,55 +283,40 @@
       (set! (. grid-bag -insets) (new Insets 65 20 0 0))
       grid-bag))
 
-  ;;
+  ;; Adds the tips scroll pane and it's constraints to the frame.
   (doto frame
     (.add tips-scroll-pane tips-text-grid-bag))
 
-  ;;
-  (def entries-list-data
-    (into-array String ["One" "Two" "Three" "Four"]))
 
-  ;;
-  (def entries-list
-    (doto (new JList entries-list-data)))
+  ;;;--------------------------------------------------;;;
+  ;;; Title label and it's constraints.                ;;;
+  ;;;--------------------------------------------------;;;
 
-  ;; Entries List Model?
-
-  ;;
-  (def entries-scroll-pane
-    (doto (new JScrollPane)
-      (.setViewportView entries-list)))
-
-  ;;
-  (def entries-scroll-pane-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 5)
-      (set! (. grid-bag -gridy) 1)
-      (set! (. grid-bag -gridwidth) 3)
-      (set! (. grid-bag -gridheight) 3)
-      (set! (. grid-bag -fill) GridBagConstraints/BOTH)
-      (set! (. grid-bag -ipadx) 523)
-      (set! (. grid-bag -ipady) 295)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -weightx) 1.0)
-      (set! (. grid-bag -weighty) 1.0)
-      (set! (. grid-bag -insets) (new Insets 65 20 0 0))
-      grid-bag))
-
-  ;;
-  (doto frame
-    (.add entries-scroll-pane entries-scroll-pane-grid-bag))
-
-
+  ;; Creates a label component for the title
   (def title-label
     (doto (new JLabel)
       (.setFont (new Font "Segoe UI" 1 24))
       (.setText "To-Do List")))
 
-  )
+  ;; Creates constraints for the title Label
+  (def title-label-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 0)
+      (set! (. grid-bag -gridy) 1)
+      (set! (. grid-bag -ipadx) 7)
+      (set! (. grid-bag -ipady) 23)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 6 20 0 0))
+      grid-bag))
+
+  ;; Adds the title label and it's constraints to the frame
+  (doto frame
+    (.add title-label title-label-grid-bag))
+
+  ) ;; End of initialize function.
 
 
 ;; Run the gui
 (defn run []
-  (initialize primary-frame)
+  (initialize-primary-frame primary-frame)
   (doto primary-frame (.pack) (.setVisible true)))
