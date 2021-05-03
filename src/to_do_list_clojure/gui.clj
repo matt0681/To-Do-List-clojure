@@ -13,12 +13,14 @@
                         JLabel
                         JList
                         JButton
-                        JFrame)
+                        JFrame
+                        BorderFactory JTextField)
            (java.awt Font
                      Color
                      GridBagConstraints
                      GridBagLayout
-                     Insets)))
+                     Insets)
+           (javax.swing.border BevelBorder)))
 
 ;;;----------------------------------------------------------;;;
 ;;; Creates a primary-frame for the to-do list application   ;;;
@@ -49,8 +51,6 @@
   (def date-list
     (doto (new JList date-list-data)))
 
-  ;; Date list model?
-
   ;; Creates a scroll pane component for the dates
   (def date-scroll-pane
     (doto (new JScrollPane)
@@ -61,11 +61,11 @@
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 2)
       (set! (. grid-bag -gridy) 1)
-      (set! (. grid-bag -gridwidth) 3)
-      (set! (. grid-bag -gridheight) 3)
+      (set! (. grid-bag -gridwidth) 2)
+      (set! (. grid-bag -gridheight) 2)
       (set! (. grid-bag -fill) GridBagConstraints/BOTH)
-      (set! (. grid-bag -ipadx) 72)
-      (set! (. grid-bag -ipady) 295)
+      (set! (. grid-bag -ipadx) 56)
+      (set! (. grid-bag -ipady) 262)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
       (set! (. grid-bag -weightx) 1.0)
       (set! (. grid-bag -weighty) 1.0)
@@ -110,11 +110,11 @@
   ;; Creates the grid bag constraints for the entry list label
   (def entry-list-label-grid-bag
     (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 6)
+      (set! (. grid-bag -gridx) 5)
       (set! (. grid-bag -gridy) 0)
       (set! (. grid-bag -ipadx) 8)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 11 0 0))
+      (set! (. grid-bag -insets) (new Insets 10 22 0 0))
       grid-bag))
 
   ;; Adds the entry list label and it's constraints
@@ -129,8 +129,6 @@
   (def entries-list
     (doto (new JList entries-list-data)))
 
-  ;; Entries List Model?
-
   ;; Creates a scroll pane for the entries
   (def entries-scroll-pane
     (doto (new JScrollPane)
@@ -139,17 +137,17 @@
   ;; Creates constraints for the entries scroll pane
   (def entries-scroll-pane-grid-bag
     (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 5)
+      (set! (. grid-bag -gridx) 4)
       (set! (. grid-bag -gridy) 1)
-      (set! (. grid-bag -gridwidth) 3)
-      (set! (. grid-bag -gridheight) 3)
+      (set! (. grid-bag -gridwidth) 5)
+      (set! (. grid-bag -gridheight) 2)
       (set! (. grid-bag -fill) GridBagConstraints/BOTH)
-      (set! (. grid-bag -ipadx) 523)
-      (set! (. grid-bag -ipady) 295)
+      (set! (. grid-bag -ipadx) 409)
+      (set! (. grid-bag -ipady) 262)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
       (set! (. grid-bag -weightx) 1.0)
       (set! (. grid-bag -weighty) 1.0)
-      (set! (. grid-bag -insets) (new Insets 6 19 0 31))
+      (set! (. grid-bag -insets) (new Insets 6 19 0 16))
       grid-bag))
 
   ;; Adds the entries scroll pane and scroll pane constraints to the frame.
@@ -167,17 +165,17 @@
       (.setFont (new Font "Segoe UI" 0 12))
       (.setText "Select")))
 
-  ;; Button Events ?
+  ;; Need to add the Button Action Listener!!
 
   ;; Creates constraints for the select button
   (def select-date-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 2)
-      (set! (. grid-bag -gridy) 4)
+      (set! (. grid-bag -gridy) 5)
       (set! (. grid-bag -gridwidth) 2)
       (set! (. grid-bag -ipadx) 4)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 28 10 0))
+      (set! (. grid-bag -insets) (new Insets 15 28 10 0))
       grid-bag))
 
   ;; Adds the select date button and it's constraints to the frame.
@@ -190,16 +188,16 @@
       (.setFont (new Font "Segoe UI" 0 12))
       (.setText "Mark Complete")))
 
-  ;; Button events ?
+  ;; Need to add Button Action Listener!
 
   ;; Completed Button Constraints
   (def completed-btn-grid-bag
     (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 5)
-      (set! (. grid-bag -gridy) 4)
+      (set! (. grid-bag -gridx) 4)
+      (set! (. grid-bag -gridy) 5)
       (set! (. grid-bag -ipadx) 11)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 29 10 0))
+      (set! (. grid-bag -insets) (new Insets 15 18 10 0))
       grid-bag))
 
   ;; Adds the completed button and it's constraints to the frame.
@@ -212,16 +210,16 @@
       (.setFont (new Font "Segoe UI" 0 12))
       (.setText "Add Entry")))
 
-  ;; Button events ?
+  ;; Need to add Button Action Listener!
 
   ;; Add Entry Button Constraints
   (def add-entry-btn-grid-bag
     (let [grid-bag (new GridBagConstraints)]
       (set! (. grid-bag -gridx) 5)
-      (set! (. grid-bag -gridy) 3)
+      (set! (. grid-bag -gridy) 5)
       (set! (. grid-bag -gridwidth) 2)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 26 10 0))
+      (set! (. grid-bag -insets) (new Insets 15 18 10 0))
       grid-bag))
 
   ;; Adds the add-entry button and it's constraints to the frame.
@@ -234,16 +232,15 @@
       (.setFont (new Font "Segoe UI" 0 12))
       (.setText "Delete Entry")))
 
-  ;; Button events ?
+  ;; Need to add Button Action Listener!
 
   ;; delete entries Button Constraints
   (def delete-entry-btn-grid-bag
     (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 5)
-      (set! (. grid-bag -gridy) 4)
-      (set! (. grid-bag -ipadx) 11)
+      (set! (. grid-bag -gridx) 7)
+      (set! (. grid-bag -gridy) 5)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 29 10 0))
+      (set! (. grid-bag -insets) (new Insets 15 18 10 0))
       grid-bag))
 
   ;; Adds the delete-entry button and it's constraints to the frame.
@@ -261,7 +258,9 @@
       (.setEditable false)
       (.setBackground (new Color 240 240 240))
       (.setFont (new Font "Segoe UI" 0 12))
-      (.setText "TIPS:")))
+      (.setText "TIPS:")
+      (.setBorder (doto BorderFactory
+                    (. createBevelBorder BevelBorder/RAISED)))))
 
   ;; Creates a scroll pane for the tips text pane
   (def tips-scroll-pane
@@ -274,13 +273,14 @@
       (set! (. grid-bag -gridx) 0)
       (set! (. grid-bag -gridy) 2)
       (set! (. grid-bag -gridwidth) 2)
+      (set! (. grid-bag -gridheight) 3)
       (set! (. grid-bag -fill) GridBagConstraints/BOTH)
-      (set! (. grid-bag -ipadx) 124)
-      (set! (. grid-bag -ipady) 78)
+      (set! (. grid-bag -ipadx) 102)
+      (set! (. grid-bag -ipady) 181)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
       (set! (. grid-bag -weightx) 1.0)
       (set! (. grid-bag -weighty) 1.0)
-      (set! (. grid-bag -insets) (new Insets 65 20 0 0))
+      (set! (. grid-bag -insets) (new Insets 65 17 0 0))
       grid-bag))
 
   ;; Adds the tips scroll pane and it's constraints to the frame.
@@ -306,12 +306,27 @@
       (set! (. grid-bag -ipadx) 7)
       (set! (. grid-bag -ipady) 23)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 6 20 0 0))
+      (set! (. grid-bag -insets) (new Insets 6 17 0 0))
       grid-bag))
 
   ;; Adds the title label and it's constraints to the frame
   (doto frame
     (.add title-label title-label-grid-bag))
+
+  ;;;---------------------------------------------------------;;;
+  ;;; Date input and entry input text fields and constraints  ;;;
+  ;;;---------------------------------------------------------;;;
+
+  (def date-input-text-field
+    (doto (new JTextField)
+      (.setText "mm/dd/yyyy")))
+
+  (def date-input-grid-bag
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 2)
+      (set! (. grid-bag -gridy) 4)
+      ))
+
 
   ) ;; End of initialize function.
 
