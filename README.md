@@ -1,14 +1,14 @@
 # to-do-list-clojure
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure To-Do List Application. Can add dates and entries to those dates.
 
 ## Usage
 
-FIXME
+core.clj is the file that runs entire application. Run (main) to start application.
 
 ## License
 
-Copyright © 2021 FIXME
+Copyright © 2021 Matthew Lad
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
