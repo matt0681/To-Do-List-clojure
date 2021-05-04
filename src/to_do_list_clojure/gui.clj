@@ -15,7 +15,7 @@
                         JButton
                         JFrame
                         BorderFactory
-                        JTextField JOptionPane)
+                        JTextField JOptionPane ListSelectionModel DefaultListModel)
            (java.awt Font
                      Color
                      GridBagConstraints
@@ -54,6 +54,10 @@
 ;; you can add and remove items easily. Right now date-list is not
 ;; mutable.
 ;;
+;; Add a list selection model so that multiple dates can't be selected.
+;;
+;;
+;;
 
 (defn mark-complete-action []
   )
@@ -70,13 +74,17 @@
   ;;; Date List Data, Label, Constraints, Scroll-Pane ;;;
   ;;;-------------------------------------------------;;;
 
-  ;; Gets the data for the dates from the data.clj file
-  (def date-list-data
-    (into-array String (vec (db/get-dates-string))))
+  ;;; Gets the data for the dates from the data.clj file
+  ;(def date-list-data
+  ;  (into-array String (vec (db/get-dates-string))))
+
+  (def date-list-model (new DefaultListModel))
 
   ;; Creates a list component for the dates
   (def date-list
-    (doto (new JList date-list-data)))
+    (doto (new JList date-list-model)
+      (.setSelectionMode ListSelectionModel/SINGLE_INTERVAL_SELECTION)
+      (.setLayoutOrientation JList/VERTICAL)))
 
   ;; Creates a scroll pane component for the dates
   (def date-scroll-pane
