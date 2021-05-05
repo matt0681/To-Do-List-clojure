@@ -8,19 +8,16 @@
 
 (ns to-do-list-clojure.gui
   (:require [to-do-list-clojure.data :as db])
-  (:import (javax.swing JTextPane
-                        JScrollPane
-                        JLabel
-                        JList
-                        JButton
-                        JFrame
-                        BorderFactory
-                        JTextField JOptionPane ListSelectionModel DefaultListModel)
-           (java.awt Font
-                     Color
-                     GridBagConstraints
-                     GridBagLayout
+  (:import (javax.swing JTextPane            JScrollPane
+                        JLabel               JList
+                        JButton              JFrame
+                        BorderFactory        JTextField
+                        ListSelectionModel   DefaultListModel)
+
+           (java.awt Font                   Color
+                     GridBagConstraints     GridBagLayout
                      Insets)
+
            (javax.swing.border BevelBorder)
            (java.awt.event ActionListener)))
 
@@ -80,11 +77,16 @@
 
   (def date-list-model (new DefaultListModel))
 
+  ;; populates the date-list with initial values
+  (for [subject (db/get-dates-string)]
+    (.addElement date-list-model subject))
+
   ;; Creates a list component for the dates
   (def date-list
-    (doto (new JList date-list-model)
+    (doto (new JList)
       (.setSelectionMode ListSelectionModel/SINGLE_INTERVAL_SELECTION)
-      (.setLayoutOrientation JList/VERTICAL)))
+      (.setLayoutOrientation JList/VERTICAL)
+      (.setModel date-list-model)))
 
   ;; Creates a scroll pane component for the dates
   (def date-scroll-pane
