@@ -30,23 +30,39 @@
     (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
     (.setLayout (new GridBagLayout))))
 
-
+;;;----------------------------------------------------------;;;
+;;; Creates some initial global variables (components)       ;;;
+;;;----------------------------------------------------------;;;
 (def date-input-text-field (new JTextField))
+(def entry-input-text-field (new JTextField))
 
 
-;; Action functions for each button.
+;;;----------------------------------------------------------;;;
+;;; Action Functions for each of the Buttons                 ;;;
+;;;----------------------------------------------------------;;;
+
+;;; Action to add an entry to the to-do-list.
+;;; This action is connected to the add entry button.
 (defn add-entry-action []
-  (let [date-input (.getText date-input-text-field)]
-    (db/add-date date-input)
-    (println date-input)
-    (println (db/get-dates-string))))
+  (let [date-input (str (.getText date-input-text-field))
+        entry-input (str (.getText entry-input-text-field))]
+    (db/add-date (db/format-date date-input))
+    (db/add-entry date-input 1 entry-input)
 
+    ;; The date-list component is not showing the newly added dates.
+    ;; The entry-list component is not showing the newly added entry.
+
+    ))
+
+;;;
 (defn delete-entry-action []
   )
 
+;;;
 (defn select-date-action []
   )
 
+;;; 
 (defn mark-complete-action []
   )
 
@@ -329,6 +345,7 @@
   (doto frame
     (.add title-label title-label-grid-bag))
 
+
   ;;;---------------------------------------------------------;;;
   ;;; Date input and entry input text fields and constraints  ;;;
   ;;;---------------------------------------------------------;;;
@@ -376,7 +393,10 @@
     (.add entry-input-text-field entry-input-grid-bag))
 
 
-  ;; Creates action listeners for each of the buttons
+  ;;;----------------------------------------------------------;;;
+  ;;; Creates action listeners for each of the buttons         ;;;
+  ;;; These listeners call action-functions.                   ;;;
+  ;;;----------------------------------------------------------;;;
   (def add-entry-action-listener
     (proxy [ActionListener] []
       (actionPerformed [event] (add-entry-action))))
@@ -394,7 +414,9 @@
       (actionPerformed [event] (mark-complete-action))))
 
 
-  ;; Adds action listeners to each of the buttons
+  ;;;----------------------------------------------------------;;;
+  ;;; Adds action listeners to each of the buttons.            ;;;
+  ;;;----------------------------------------------------------;;;
   (.addActionListener add-entry-btn add-entry-action-listener)
   (.addActionListener delete-entry-btn delete-entry-action-listener)
   (.addActionListener select-date-btn select-date-action-listener)
@@ -403,8 +425,13 @@
   ) ;; End of initialize function.
 
 
-;; Run the gui
+;;;----------------------------------------------------------------------;;;
+;;; Function to run the main GUI. It initializes and displays the gui.   ;;;
+;;;----------------------------------------------------------------------;;;
 (defn run []
   (initialize-primary-frame primary-frame)
-  (populate-lists)
   (doto primary-frame (.pack) (.setVisible true)))
+
+
+
+
