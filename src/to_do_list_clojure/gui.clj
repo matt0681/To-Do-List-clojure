@@ -35,6 +35,10 @@
 ;;;----------------------------------------------------------;;;
 (def date-input-text-field (new JTextField))
 (def entry-input-text-field (new JTextField))
+(def date-list-model (new DefaultListModel))
+(def date-list (new JList date-list-model))
+(def entry-list-model (new DefaultListModel))
+(def entries-list (new JList entry-list-model))
 
 
 ;;;----------------------------------------------------------;;;
@@ -46,12 +50,13 @@
 (defn add-entry-action []
   (let [date-input (str (.getText date-input-text-field))
         entry-input (str (.getText entry-input-text-field))]
-    (db/add-date (db/format-date date-input))
     (db/add-entry date-input 1 entry-input)
+    (.addElement date-list-model date-input)
 
-    ;; The date-list component is not showing the newly added dates.
-    ;; The entry-list component is not showing the newly added entry.
-
+    ;; entry-input isn't working right.
+    ;; Adding multiples of the same date is possible
+    ;; but shouldn't be.
+    
     ))
 
 ;;;
@@ -62,7 +67,7 @@
 (defn select-date-action []
   )
 
-;;; 
+;;;
 (defn mark-complete-action []
   )
 
@@ -78,7 +83,9 @@
   ;;; Date List Data, Label, Constraints, Scroll-Pane ;;;
   ;;;-------------------------------------------------;;;
 
-  (def date-list-model (new DefaultListModel))
+  (def date-list-model
+    (doto (new DefaultListModel)
+      (.addElement "mm/dd/yyyy")))
 
   ;; Creates a list component for the dates
   (def date-list
@@ -157,12 +164,13 @@
     (.add entry-list-label entry-list-label-grid-bag))
 
   ;; Creates data to go into the entries list
-  (def entries-list-data
-    (into-array String [""]))
+  (def entries-list-model
+    (doto (new DefaultListModel)
+      (.addElement "Thing that needs to get done.")))
 
   ;; Creates a list component for the entries list
   (def entries-list
-    (doto (new JList entries-list-data)))
+    (doto (new JList entries-list-model)))
 
   ;; Creates a scroll pane for the entries
   (def entries-scroll-pane
