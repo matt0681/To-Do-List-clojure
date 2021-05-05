@@ -39,7 +39,7 @@
   (let [date-obj (new Date date-millis)
         sdf (SimpleDateFormat. "MM/dd/yyyy")
         date-str (.format sdf date-obj)]
-    date-str))
+    (.toString date-str)))
 
 
 (defn date-to-millis
@@ -105,8 +105,8 @@
 
 
 (defn get-dates-string
-  "Returns all the dates in main-data in string format."
+  "Returns all the dates in main-data in a vector of strings."
   []
-  (map millis-to-date (keys main-data)))
+  (vec (map millis-to-date (keys main-data))))
 
 

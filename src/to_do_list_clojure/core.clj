@@ -11,7 +11,7 @@
 
 (defn main []
 
-  (db/add-date (db/format-date "02/09/2000"))
-  (db/add-entry "02/09/2000" 1 "Hello!!")
-
   (gui/run))
+
+
+

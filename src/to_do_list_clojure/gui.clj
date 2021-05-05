@@ -21,9 +21,6 @@
            (javax.swing.border BevelBorder)
            (java.awt.event ActionListener)))
 
-;; Variables
-(def date-list (new JList))
-
 ;;;----------------------------------------------------------;;;
 ;;; Creates a primary-frame for the to-do list application   ;;;
 ;;;----------------------------------------------------------;;;
@@ -33,28 +30,22 @@
     (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
     (.setLayout (new GridBagLayout))))
 
+
+(def date-input-text-field (new JTextField))
+
+
 ;; Action functions for each button.
 (defn add-entry-action []
-  )
+  (let [date-input (.getText date-input-text-field)]
+    (db/add-date date-input)
+    (println date-input)
+    (println (db/get-dates-string))))
 
 (defn delete-entry-action []
   )
 
 (defn select-date-action []
-  (let [selected-date (.getSelectedValue date-list)
-        entries (into-array String (vec (map last (db/get-entries selected-date))))]
-    (doto date-list
-      (.addElement entries))))
-
-;;
-;; You need to go in an add a list model to the date-list so that
-;; you can add and remove items easily. Right now date-list is not
-;; mutable.
-;;
-;; Add a list selection model so that multiple dates can't be selected.
-;;
-;;
-;;
+  )
 
 (defn mark-complete-action []
   )
@@ -71,22 +62,13 @@
   ;;; Date List Data, Label, Constraints, Scroll-Pane ;;;
   ;;;-------------------------------------------------;;;
 
-  ;;; Gets the data for the dates from the data.clj file
-  ;(def date-list-data
-  ;  (into-array String (vec (db/get-dates-string))))
-
   (def date-list-model (new DefaultListModel))
-
-  ;; populates the date-list with initial values
-  (for [subject (db/get-dates-string)]
-    (.addElement date-list-model subject))
 
   ;; Creates a list component for the dates
   (def date-list
-    (doto (new JList)
+    (doto (new JList date-list-model)
       (.setSelectionMode ListSelectionModel/SINGLE_INTERVAL_SELECTION)
-      (.setLayoutOrientation JList/VERTICAL)
-      (.setModel date-list-model)))
+      (.setLayoutOrientation JList/VERTICAL)))
 
   ;; Creates a scroll pane component for the dates
   (def date-scroll-pane
@@ -424,4 +406,5 @@
 ;; Run the gui
 (defn run []
   (initialize-primary-frame primary-frame)
+  (populate-lists)
   (doto primary-frame (.pack) (.setVisible true)))
