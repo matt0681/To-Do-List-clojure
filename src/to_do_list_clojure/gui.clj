@@ -53,7 +53,6 @@
 ;;;----------------------------------------;;;
 ;;; Function to Initializes all components ;;;
 ;;;----------------------------------------;;;
-
 (defn initialize-primary-frame
   "Initializes all the components and adds them to the frame."
   [frame]
@@ -242,214 +241,72 @@
   (doto frame
     (.add add-button add-constraints))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  (
   ;;;------------------------------------------------------------;;;
-  ;;; List Data, Date and Entry Labels, Constraints, Scroll-Pane ;;;
+  ;;; Date and Entry Text Fields                                 ;;;
   ;;;------------------------------------------------------------;;;
-
-  (def date-list-model
-    (doto (new DefaultListModel)
-      (.addElement "mm/dd/yyyy")))
-
-  ;; Creates a list component for the dates
-  (def date-list
-    (doto (new JList date-list-model)
-      (.setSelectionMode ListSelectionModel/SINGLE_INTERVAL_SELECTION)
-      (.setLayoutOrientation JList/VERTICAL)))
-
-  ;; Creates a scroll pane component for the dates
-  (def date-scroll-pane
-    (doto (new JScrollPane)
-      (.setViewportView date-list)))
-
-  ;; Creates the Grid Bag Constraints for the date scroll component
-  (def date-scroll-pane-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 2)
-      (set! (. grid-bag -gridy) 1)
-      (set! (. grid-bag -gridwidth) 2)
-      (set! (. grid-bag -gridheight) 2)
-      (set! (. grid-bag -fill) GridBagConstraints/BOTH)
-      (set! (. grid-bag -ipadx) 56)
-      (set! (. grid-bag -ipady) 262)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -weightx) 1.0)
-      (set! (. grid-bag -weighty) 1.0)
-      (set! (. grid-bag -insets) (new Insets 6 18 0 0))
-      grid-bag))
-
-  ;; Adds the dates scroll pane and the grid bag constraints to the frame
-  (doto frame
-    (.add date-scroll-pane date-scroll-pane-grid-bag))
-
-  ;; Creates a label for the date list
-  (def date-list-label
-    (doto (new JLabel)
-      (.setFont (new Font "Segoe UI" 1 18))
-      (.setText "Date")))
-
-  ;; Creates grid-bag constraints for the date list label
-  (def date-list-label-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 2)
-      (set! (. grid-bag -gridy) 0)
-      (set! (. grid-bag -ipadx) 11)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 39 0 0))
-      grid-bag))
-
-  ;; Adds the date list label and date list label constraints to the frame
-  (doto frame
-    (.add date-list-label date-list-label-grid-bag))
-
-
-  ;;;--------------------------------------------------;;;
-  ;;; Entry List Data, Label, Constraints, Scroll-Pane ;;;
-  ;;;--------------------------------------------------;;;
-
-  ;; Creates a label component for the entries list
-  (def entry-list-label
-    (doto (new JLabel)
-      (.setFont (new Font "Segoe UI" 1 18))
-      (.setText "Entries")))
-
-  ;; Creates the grid bag constraints for the entry list label
-  (def entry-list-label-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 5)
-      (set! (. grid-bag -gridy) 0)
-      (set! (. grid-bag -ipadx) 8)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 22 0 0))
-      grid-bag))
-
-  ;; Adds the entry list label and it's constraints
-  (doto frame
-    (.add entry-list-label entry-list-label-grid-bag))
-
-  ;; Creates data to go into the entries list
-  (def entries-list-model
-    (doto (new DefaultListModel)
-      (.addElement "Thing that needs to get done.")))
-
-  ;; Creates a list component for the entries list
-  (def entries-list
-    (doto (new JList entries-list-model)))
-
-  ;; Creates a scroll pane for the entries
-  (def entries-scroll-pane
-    (doto (new JScrollPane)
-      (.setViewportView entries-list)))
-
-  ;; Creates constraints for the entries scroll pane
-  (def entries-scroll-pane-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 4)
-      (set! (. grid-bag -gridy) 1)
-      (set! (. grid-bag -gridwidth) 5)
-      (set! (. grid-bag -gridheight) 2)
-      (set! (. grid-bag -fill) GridBagConstraints/BOTH)
-      (set! (. grid-bag -ipadx) 409)
-      (set! (. grid-bag -ipady) 262)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -weightx) 1.0)
-      (set! (. grid-bag -weighty) 1.0)
-      (set! (. grid-bag -insets) (new Insets 6 19 0 16))
-      grid-bag))
-
-  ;; Adds the entries scroll pane and scroll pane constraints to the frame.
-  (doto frame
-    (.add entries-scroll-pane entries-scroll-pane-grid-bag))
-
-
-
-
-  ;;;---------------------------------------------------------;;;
-  ;;; Date input and entry input text fields and constraints  ;;;
-  ;;;---------------------------------------------------------;;;
-
-  ;; Creates a date input text field
-  (def date-input-text-field
+  ;; Creates a date text field
+  (def date-text-field
     (doto (new JTextField)
+      (.setFont (new Font "Segoe UI" 0 12))
       (.setText "mm/dd/yyyy")))
 
-  ;; Creates constraints for the date input text field
-  (def date-input-grid-bag
+  ;; Creates constraints for the date text field
+  (def date-text-field-constraints
     (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 2)
-      (set! (. grid-bag -gridy) 4)
-      (set! (. grid-bag -gridwidth) 2)
-      (set! (. grid-bag -ipadx) 72)
-      (set! (. grid-bag -ipady) 10)
+      (set! (. grid-bag -gridx) 1)
+      (set! (. grid-bag -gridy) 7)
+      (set! (. grid-bag -gridwidth) 8)
+      (set! (. grid-bag -ipadx) 121)
+      (set! (. grid-bag -ipady) 7)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 18 0 0))
+      (set! (. grid-bag -insets) (new Insets 6 10 10 0))
       grid-bag))
 
-  ;; Adds the date input text field and it's constraints to the frame
+  ;; Adds the date text field and it's constraint to the frame
   (doto frame
-    (.add date-input-text-field date-input-grid-bag))
+    (.add date-text-field date-text-field-constraints))
 
-  ;; Creates an entry input text field
-  (def entry-input-text-field
+  ;; Creates a entry text field
+  (def entry-text-field
     (doto (new JTextField)
-      (.setText "Fold the laundry.")))
+      (.setFont (new Font "Segoe UI" 0 12))
+      (.setText "entry")))
 
-  ;; Creates constraints for the entry input text field
-  (def entry-input-grid-bag
+  ;; Creates constraints for the entry text field
+  (def entry-text-field-constraints
     (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 4)
-      (set! (. grid-bag -gridy) 4)
-      (set! (. grid-bag -gridwidth) 5)
-      (set! (. grid-bag -ipadx) 426)
-      (set! (. grid-bag -ipady) 10)
+      (set! (. grid-bag -gridx) 9)
+      (set! (. grid-bag -gridy) 7)
+      (set! (. grid-bag -ipadx) 455)
+      (set! (. grid-bag -ipady) 7)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 10 18 0 16))
+      (set! (. grid-bag -insets) (new Insets 6 10 10 0))
       grid-bag))
 
-  ;; Adds the entry input text field and it's constraints to the frame
+  ;; Adds the entry text field and it's constraint to the frame
   (doto frame
-    (.add entry-input-text-field entry-input-grid-bag))
+    (.add entry-text-field entry-text-field-constraints))
 
 
   ;;;----------------------------------------------------------;;;
   ;;; Creates action listeners for each of the buttons         ;;;
   ;;; These listeners call action-functions.                   ;;;
   ;;;----------------------------------------------------------;;;
-  (def add-entry-action-listener
+  (def add-action-listener
     (proxy [ActionListener] []
       (actionPerformed [event] (add-entry-action))))
 
-  (def delete-entry-action-listener
+  (def delete-selected-action-listener
     (proxy [ActionListener] []
       (actionPerformed [event] (delete-entry-action))))
-
-  (def select-date-action-listener
-    (proxy [ActionListener] []
-      (actionPerformed [event] (select-date-action))))
-
 
   ;;;----------------------------------------------------------;;;
   ;;; Adds action listeners to each of the buttons.            ;;;
   ;;;----------------------------------------------------------;;;
   (.addActionListener add-entry-btn add-entry-action-listener)
   (.addActionListener delete-entry-btn delete-entry-action-listener)
-  (.addActionListener select-date-btn select-date-action-listener)) ;; End of initialize function.
+  (.addActionListener select-date-btn select-date-action-listener)
+)
 
 
 ;;;----------------------------------------------------------------------;;;
@@ -458,7 +315,5 @@
 (defn run []
   (initialize-primary-frame primary-frame)
   (doto primary-frame (.pack) (.setVisible true)))
-
-
 
 
