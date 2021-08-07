@@ -8,17 +8,17 @@
 
 (ns to-do-list-clojure.gui
   (:require [to-do-list-clojure.data :as db])
-  (:import (javax.swing JTextPane JScrollPane
-                        JLabel JList
-                        JButton JFrame
-                        BorderFactory JTextField
-                        ListSelectionModel DefaultListModel AbstractListModel)
-
-           (java.awt Font                   Color
-                     GridBagConstraints     GridBagLayout
+  (:import (javax.swing JScrollPane
+                        JLabel
+                        JList
+                        JButton
+                        JFrame
+                        JTextField
+                        DefaultListModel)
+           (java.awt Font
+                     GridBagConstraints
+                     GridBagLayout
                      Insets)
-
-           (javax.swing.border BevelBorder)
            (java.awt.event ActionListener)))
 
 ;;;----------------------------------------------------------;;;
