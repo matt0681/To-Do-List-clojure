@@ -8,11 +8,11 @@
 
 (ns to-do-list-clojure.gui
   (:require [to-do-list-clojure.data :as db])
-  (:import (javax.swing JTextPane            JScrollPane
-                        JLabel               JList
-                        JButton              JFrame
-                        BorderFactory        JTextField
-                        ListSelectionModel   DefaultListModel)
+  (:import (javax.swing JTextPane JScrollPane
+                        JLabel JList
+                        JButton JFrame
+                        BorderFactory JTextField
+                        ListSelectionModel DefaultListModel AbstractListModel)
 
            (java.awt Font                   Color
                      GridBagConstraints     GridBagLayout
@@ -31,57 +31,237 @@
     (.setLayout (new GridBagLayout))))
 
 ;;;----------------------------------------------------------;;;
-;;; Creates some initial global variables (components)       ;;;
-;;;----------------------------------------------------------;;;
-(def date-input-text-field (new JTextField))
-(def entry-input-text-field (new JTextField))
-(def date-list-model (new DefaultListModel))
-(def date-list (new JList date-list-model))
-(def entry-list-model (new DefaultListModel))
-(def entries-list (new JList entry-list-model))
-
-
-;;;----------------------------------------------------------;;;
 ;;; Action Functions for each of the Buttons                 ;;;
 ;;;----------------------------------------------------------;;;
 
 ;;; Action to add an entry to the to-do-list.
 ;;; This action is connected to the add entry button.
 (defn add-entry-action []
-  (let [date-input (str (.getText date-input-text-field))
-        entry-input (str (.getText entry-input-text-field))]
-    (db/add-entry date-input 1 entry-input)
-    (.addElement date-list-model date-input)
+  ;(let [date-input (str (.getText date-input-text-field))
+  ;      entry-input (str (.getText entry-input-text-field))]
+  ;  (db/add-entry date-input 1 entry-input)
+  ;  (.addElement date-list-model date-input)
+  ;  )
+  )
 
-    ;; entry-input isn't working right.
-    ;; Adding multiples of the same date is possible
-    ;; but shouldn't be.
-    
-    ))
-
+;;;
 ;;;
 (defn delete-entry-action []
-  )
 
-;;;
-(defn select-date-action []
   )
-
-;;;
-(defn mark-complete-action []
-  )
-
 
 ;;;----------------------------------------;;;
 ;;; Function to Initializes all components ;;;
 ;;;----------------------------------------;;;
+
 (defn initialize-primary-frame
   "Initializes all the components and adds them to the frame."
   [frame]
 
-  ;;;-------------------------------------------------;;;
-  ;;; Date List Data, Label, Constraints, Scroll-Pane ;;;
-  ;;;-------------------------------------------------;;;
+  ;;;--------------------------------------------------;;;
+  ;;; Title label and it's constraints.                ;;;
+  ;;;--------------------------------------------------;;;
+  ;; Creates a label component for the title
+  (def title-label
+    (doto (new JLabel)
+      (.setFont (new Font "Segoe UI Semibold" 1 24))
+      (.setText "To-Do List")))
+
+  ;; Creates constraints for the title Label
+  (def title-label-constraints
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 0)
+      (set! (. grid-bag -gridy) 0)
+      (set! (. grid-bag -gridwidth) 5)
+      (set! (. grid-bag -gridheight) 2)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 19 66 0 0))
+      grid-bag))
+
+  ;; Adds the title label and it's constraints to the frame
+  (doto frame
+    (.add title-label title-label-constraints))
+
+  ;;;---------------------------------------------------;;;
+  ;;; Hints labels and constraints                       ;;;
+  ;;;---------------------------------------------------;;;
+  ;; Creates hints-1 label
+  (def hints-1-label
+    (doto (new JLabel)
+      (.setFont (new Font "Segoe UI" 0 14))
+      (.setText "Tips:  To add an entry, enter it's date and text below and hit \"Add Entry\".")))
+  ;; Creates hints-2 label
+  (def hints-2-label
+    (doto (new JLabel)
+      (.setFont (new Font "Segoe UI" 0 14))
+      (.setText "         To delete an entry, select it from the list and then hit \"Delete Entry\".")))
+
+  ;; Creates constraints for the hints-1 label
+  (def hints-1-constraints
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 9)
+      (set! (. grid-bag -gridy) 0)
+      (set! (. grid-bag -gridwidth) 12)
+      (set! (. grid-bag -ipadx) 9)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 19 29 0 10))
+      grid-bag))
+  ;; Creates constraints for the hints-2 label
+  (def hints-2-constraints
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 9)
+      (set! (. grid-bag -gridy) 1)
+      (set! (. grid-bag -gridwidth) 11)
+      (set! (. grid-bag -gridheight) 3)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 3 29 0 0))
+      grid-bag))
+
+  ;; Adds the hints-1 and 2 labels and their constraints to the frame.
+  (doto frame
+    (.add hints-1-label hints-1-constraints)
+    (.add hints-2-label hints-2-constraints))
+
+
+  ;;;--------------------------------------------------;;;
+  ;;; Date and Entry Labels and their Constraints      ;;;
+  ;;;--------------------------------------------------;;;
+  ;; Creates a Date Label
+  (def date-label
+    (doto (new JLabel)
+      (.setFont (new Font "Segoe UI" 0 18))
+      (.setText "Date")))
+  ;; Creates an entry label
+  (def entry-label
+    (doto (new JLabel)
+      (.setFont (new Font "Segoe UI" 0 18))
+      (.setText "Entry")))
+
+  ;; Creates the grid bag constraints for the date label
+  (def date-label-constraints
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 0)
+      (set! (. grid-bag -gridy) 4)
+      (set! (. grid-bag -gridwidth) 2)
+      (set! (. grid-bag -ipadx) 33)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 35 0 0))
+      grid-bag))
+  ;; Creates the grid bag constraints for the entry label
+  (def entry-label-constraints
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 2)
+      (set! (. grid-bag -gridy) 4)
+      (set! (. grid-bag -gridwidth) 6)
+      (set! (. grid-bag -ipadx) 39)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 10 18 0 0))
+      grid-bag))
+
+  ;; Adds the entry and date labels and their constraints to the frame
+  (doto frame
+    (.add date-label date-label-constraints)
+    (.add entry-label entry-label-constraints))
+
+  ;;;--------------------------------------------------;;;
+  ;;; Actual To-Do List Component                      ;;;
+  ;;;--------------------------------------------------;;;
+  ;; Model for the list
+  (def list-model
+    (doto (new DefaultListModel)
+      (.addElement "mm/dd/yyyy  -   Example entry.")))
+
+  ;; Actual list component
+  (def to-do-list
+    (doto (new JList list-model)
+      (.setFont (new Font "Segoe UI" 0 12))))
+
+  ;; Creates a scroll pane for the list
+  (def list-scroll-pane
+    (doto (new JScrollPane)
+      (.setViewportView to-do-list)))
+
+  ;; Creates constraints for the list's scroll pane
+  (def list-scroll-pane-constraints
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 0)
+      (set! (. grid-bag -gridy) 5)
+      (set! (. grid-bag -gridwidth) 10)
+      (set! (. grid-bag -fill) GridBagConstraints/BOTH)
+      (set! (. grid-bag -ipadx) 646)
+      (set! (. grid-bag -ipady) 249)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -weightx) 1.0)
+      (set! (. grid-bag -heighty) 1.0)
+      (set! (. grid-bag -insets) (new Insets 6 35 0 0))
+      grid-bag))
+
+  ;; Adds the list and it's constraints to the frame
+  (doto frame
+    (.add list-scroll-pane list-scroll-pane-constraints))
+
+  ;;;--------------------------------------------------;;;
+  ;;; Delete and Add Entry Buttons                     ;;;
+  ;;;--------------------------------------------------;;;
+  ;; Creates a button for deleting the selected date
+  (def delete-selected-button
+    (doto (new JButton)
+      (.setFont (new Font "Segoe UI" 0 14))
+      (.setText "Delete Selected")))
+
+  ;; Creates constraints for the delete selected button
+  (def delete-button-constraints
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 0)
+      (set! (. grid-bag -gridy) 6)
+      (set! (. grid-bag -gridwidth) 3)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 6 35 0 0))
+      grid-bag))
+
+  ;; Adds the delete selected button and it's constraints to the frame.
+  (doto frame
+    (.add delete-selected-button delete-button-constraints))
+
+  ;; Creates a button for adding entries
+  (def add-button
+    (doto (new JButton)
+      (.setFont (new Font "Segoe UI" 0 14))
+      (.setText "Add")))
+
+  ;; Creates constraints for the add button
+  (def add-constraints
+    (let [grid-bag (new GridBagConstraints)]
+      (set! (. grid-bag -gridx) 0)
+      (set! (. grid-bag -gridy) 7)
+      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
+      (set! (. grid-bag -insets) (new Insets 6 35 10 0))
+      grid-bag))
+
+  ;; Adds the add button and it's constraints to the frame.
+  (doto frame
+    (.add add-button add-constraints))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  (
+  ;;;------------------------------------------------------------;;;
+  ;;; List Data, Date and Entry Labels, Constraints, Scroll-Pane ;;;
+  ;;;------------------------------------------------------------;;;
 
   (def date-list-model
     (doto (new DefaultListModel)
@@ -198,160 +378,6 @@
     (.add entries-scroll-pane entries-scroll-pane-grid-bag))
 
 
-  ;;;--------------------------------------------------;;;
-  ;;; Select date, completed, add, and delete buttons  ;;;
-  ;;;--------------------------------------------------;;;
-
-  ;; Creates a button for selecting the date
-  (def select-date-btn
-    (doto (new JButton)
-      (.setFont (new Font "Segoe UI" 0 12))
-      (.setText "Select")))
-
-  ;; Need to add the Button Action Listener!!
-
-  ;; Creates constraints for the select button
-  (def select-date-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 2)
-      (set! (. grid-bag -gridy) 5)
-      (set! (. grid-bag -gridwidth) 2)
-      (set! (. grid-bag -ipadx) 4)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 15 28 10 0))
-      grid-bag))
-
-  ;; Adds the select date button and it's constraints to the frame.
-  (doto frame
-    (.add select-date-btn select-date-grid-bag))
-
-  ;; Creates a button for indicating completed entries
-  (def completed-btn
-    (doto (new JButton)
-      (.setFont (new Font "Segoe UI" 0 12))
-      (.setText "Mark Complete")))
-
-  ;; Need to add Button Action Listener!
-
-  ;; Completed Button Constraints
-  (def completed-btn-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 4)
-      (set! (. grid-bag -gridy) 5)
-      (set! (. grid-bag -ipadx) 11)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 15 18 10 0))
-      grid-bag))
-
-  ;; Adds the completed button and it's constraints to the frame.
-  (doto frame
-    (.add completed-btn completed-btn-grid-bag))
-
-  ;; Creates a button for adding entries
-  (def add-entry-btn
-    (doto (new JButton)
-      (.setFont (new Font "Segoe UI" 0 12))
-      (.setText "Add Entry")))
-
-  ;; Add Entry Button Constraints
-  (def add-entry-btn-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 5)
-      (set! (. grid-bag -gridy) 5)
-      (set! (. grid-bag -gridwidth) 2)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 15 18 10 0))
-      grid-bag))
-
-  ;; Adds the add-entry button and it's constraints to the frame.
-  (doto frame
-    (.add add-entry-btn add-entry-btn-grid-bag))
-
-  ;; Creates a button for deleting entries
-  (def delete-entry-btn
-    (doto (new JButton)
-      (.setFont (new Font "Segoe UI" 0 12))
-      (.setText "Delete Entry")))
-
-  ;; Need to add Button Action Listener!
-
-  ;; delete entries Button Constraints
-  (def delete-entry-btn-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 7)
-      (set! (. grid-bag -gridy) 5)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 15 18 10 0))
-      grid-bag))
-
-  ;; Adds the delete-entry button and it's constraints to the frame.
-  (doto frame
-    (.add delete-entry-btn delete-entry-btn-grid-bag))
-
-
-  ;;;--------------------------------------------------;;;
-  ;;; Tips Text-Pane, scroll-pane, and constraints     ;;;
-  ;;;--------------------------------------------------;;;
-
-  ;; Creates a tips text-pane component
-  (def tips-text-pane
-    (doto (new JTextPane)
-      (.setEditable false)
-      (.setBackground (new Color 240 240 240))
-      (.setFont (new Font "Segoe UI" 0 12))
-      (.setText "TIPS:")
-      (.setBorder (BorderFactory/createBevelBorder BevelBorder/RAISED))))
-
-  ;; Creates a scroll pane for the tips text pane
-  (def tips-scroll-pane
-    (doto (new JScrollPane)
-      (.setViewportView tips-text-pane)))
-
-  ;; Creates constraints for the tips text pane
-  (def tips-text-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 0)
-      (set! (. grid-bag -gridy) 2)
-      (set! (. grid-bag -gridwidth) 2)
-      (set! (. grid-bag -gridheight) 3)
-      (set! (. grid-bag -fill) GridBagConstraints/BOTH)
-      (set! (. grid-bag -ipadx) 102)
-      (set! (. grid-bag -ipady) 181)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -weightx) 1.0)
-      (set! (. grid-bag -weighty) 1.0)
-      (set! (. grid-bag -insets) (new Insets 65 17 0 0))
-      grid-bag))
-
-  ;; Adds the tips scroll pane and it's constraints to the frame.
-  (doto frame
-    (.add tips-scroll-pane tips-text-grid-bag))
-
-
-  ;;;--------------------------------------------------;;;
-  ;;; Title label and it's constraints.                ;;;
-  ;;;--------------------------------------------------;;;
-
-  ;; Creates a label component for the title
-  (def title-label
-    (doto (new JLabel)
-      (.setFont (new Font "Segoe UI" 1 24))
-      (.setText "To-Do List")))
-
-  ;; Creates constraints for the title Label
-  (def title-label-grid-bag
-    (let [grid-bag (new GridBagConstraints)]
-      (set! (. grid-bag -gridx) 0)
-      (set! (. grid-bag -gridy) 1)
-      (set! (. grid-bag -ipadx) 7)
-      (set! (. grid-bag -ipady) 23)
-      (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
-      (set! (. grid-bag -insets) (new Insets 6 17 0 0))
-      grid-bag))
-
-  ;; Adds the title label and it's constraints to the frame
-  (doto frame
-    (.add title-label title-label-grid-bag))
 
 
   ;;;---------------------------------------------------------;;;
@@ -417,20 +443,13 @@
     (proxy [ActionListener] []
       (actionPerformed [event] (select-date-action))))
 
-  (def mark-complete-action-listener
-    (proxy [ActionListener] []
-      (actionPerformed [event] (mark-complete-action))))
-
 
   ;;;----------------------------------------------------------;;;
   ;;; Adds action listeners to each of the buttons.            ;;;
   ;;;----------------------------------------------------------;;;
   (.addActionListener add-entry-btn add-entry-action-listener)
   (.addActionListener delete-entry-btn delete-entry-action-listener)
-  (.addActionListener select-date-btn select-date-action-listener)
-  (.addActionListener completed-btn mark-complete-action-listener)
-
-  ) ;; End of initialize function.
+  (.addActionListener select-date-btn select-date-action-listener)) ;; End of initialize function.
 
 
 ;;;----------------------------------------------------------------------;;;

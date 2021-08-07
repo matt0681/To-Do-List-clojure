@@ -82,6 +82,9 @@
     nil
     (def main-data (merge main-data date-map))))
 
+(defn remove-date
+  "This function removes a date from the main-data map.")
+
 
 (defn add-entry
   "1. have it add the date to the main-list
