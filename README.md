@@ -1,6 +1,6 @@
 # to-do-list-clojure
 
-A Clojure To-Do List Application. Can add dates and entries to those dates.
+A simple To-Do List application I created in clojure. I used this program as a learning experience in clojure. Currently you can add dates and to-do entries via the gui window.
 
 ## Usage
 
