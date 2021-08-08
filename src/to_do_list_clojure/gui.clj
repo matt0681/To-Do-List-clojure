@@ -281,7 +281,6 @@
   ;;;----------------------------------------------------------;;;
   ;;; Action Functions for each of the Buttons                 ;;;
   ;;;----------------------------------------------------------;;;
-  (print "Finished creating the gui")
   ;; Action to add an entry to the to-do-list.
   ;; This action is connected to the add entry button.
   (defn add-entry-action []
@@ -317,7 +316,6 @@
   (def add-action-listener
     (proxy [ActionListener] []
       (actionPerformed [event] (add-entry-action))))
-  (print "Created the add action listener.")
 
   (def delete-selected-action-listener
     (proxy [ActionListener] []
@@ -335,7 +333,6 @@
   ;;; Adds action listeners to each of the buttons & Text Fields.    ;;;
   ;;;----------------------------------------------------------------;;;
   (.addActionListener add-button add-action-listener)
-  (print "Added the add action listener to the add button.")
   (.addActionListener delete-selected-button delete-selected-action-listener)
   (.addActionListener entry-text-field entry-text-field-listener)
   (.addActionListener date-text-field date-text-field-listener)
