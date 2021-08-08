@@ -14,7 +14,7 @@
                         JButton
                         JFrame
                         JTextField
-                        DefaultListModel)
+                        DefaultListModel JPanel)
            (java.awt Font
                      GridBagConstraints
                      GridBagLayout
@@ -29,26 +29,6 @@
     (.setTitle "Lad's To-Do-List!")
     (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
     (.setLayout (new GridBagLayout))))
-
-;;;----------------------------------------------------------;;;
-;;; Action Functions for each of the Buttons                 ;;;
-;;;----------------------------------------------------------;;;
-
-;;; Action to add an entry to the to-do-list.
-;;; This action is connected to the add entry button.
-(defn add-entry-action []
-  ;(let [date-input (str (.getText date-input-text-field))
-  ;      entry-input (str (.getText entry-input-text-field))]
-  ;  (db/add-entry date-input 1 entry-input)
-  ;  (.addElement date-list-model date-input)
-  ;  )
-  )
-
-;;;
-;;;
-(defn delete-entry-action []
-
-  )
 
 ;;;----------------------------------------;;;
 ;;; Function to Initializes all components ;;;
@@ -191,7 +171,6 @@
       (set! (. grid-bag -ipady) 249)
       (set! (. grid-bag -anchor) GridBagConstraints/NORTHWEST)
       (set! (. grid-bag -weightx) 1.0)
-      (set! (. grid-bag -heighty) 1.0)
       (set! (. grid-bag -insets) (new Insets 6 35 0 0))
       grid-bag))
 
@@ -245,6 +224,7 @@
   ;;; Date and Entry Text Fields                                 ;;;
   ;;;------------------------------------------------------------;;;
   ;; Creates a date text field
+  (def date-text-field-text)
   (def date-text-field
     (doto (new JTextField)
       (.setFont (new Font "Segoe UI" 0 12))
@@ -267,6 +247,7 @@
     (.add date-text-field date-text-field-constraints))
 
   ;; Creates a entry text field
+  (def entry-text-field-text)
   (def entry-text-field
     (doto (new JTextField)
       (.setFont (new Font "Segoe UI" 0 12))
@@ -287,6 +268,47 @@
   (doto frame
     (.add entry-text-field entry-text-field-constraints))
 
+  ;;;------------------------------------------------------------;;;
+  ;;; Panel                                                      ;;;
+  ;;;------------------------------------------------------------;;;
+  ;; Creates a panel
+  (def panel-component (new JPanel))
+
+  ;; Adds the panel to the frame
+  (doto frame
+    (.add panel-component (new GridBagConstraints)))
+
+  ;;;----------------------------------------------------------;;;
+  ;;; Action Functions for each of the Buttons                 ;;;
+  ;;;----------------------------------------------------------;;;
+  (print "Finished creating the gui")
+  ;; Action to add an entry to the to-do-list.
+  ;; This action is connected to the add entry button.
+  (defn add-entry-action []
+    (print "Hello from the add button action.")
+
+    ;(let [date-input ????
+    ;      entry-input ????]
+    ;  ;;(db/add-entry date-input 1 entry-input)
+    ;  (.addElement to-do-list (str date-input "  -  " entry-input))
+    ;  (print (str date-input "  -  " entry-input))
+    ;  )
+    )
+
+  ;;
+  (defn delete-entry-action []
+
+    )
+
+  ;;
+  (defn entry-text-field-action []
+
+    )
+
+  ;;
+  (defn date-text-field-action []
+    ;(print (.getText date-text-field))
+    )
 
   ;;;----------------------------------------------------------;;;
   ;;; Creates action listeners for each of the buttons         ;;;
@@ -295,17 +317,29 @@
   (def add-action-listener
     (proxy [ActionListener] []
       (actionPerformed [event] (add-entry-action))))
+  (print "Created the add action listener.")
 
   (def delete-selected-action-listener
     (proxy [ActionListener] []
       (actionPerformed [event] (delete-entry-action))))
 
-  ;;;----------------------------------------------------------;;;
-  ;;; Adds action listeners to each of the buttons.            ;;;
-  ;;;----------------------------------------------------------;;;
-  (.addActionListener add-entry-btn add-entry-action-listener)
-  (.addActionListener delete-entry-btn delete-entry-action-listener)
-  (.addActionListener select-date-btn select-date-action-listener)
+  (def entry-text-field-listener
+    (proxy [ActionListener] []
+      (actionPerformed [event] (entry-text-field-action))))
+
+  (def date-text-field-listener
+    (proxy [ActionListener] []
+      (actionPerformed [event] (date-text-field-action))))
+
+  ;;;----------------------------------------------------------------;;;
+  ;;; Adds action listeners to each of the buttons & Text Fields.    ;;;
+  ;;;----------------------------------------------------------------;;;
+  (.addActionListener add-button add-action-listener)
+  (print "Added the add action listener to the add button.")
+  (.addActionListener delete-selected-button delete-selected-action-listener)
+  (.addActionListener entry-text-field entry-text-field-listener)
+  (.addActionListener date-text-field date-text-field-listener)
+
 )
 
 

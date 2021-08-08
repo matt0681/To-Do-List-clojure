@@ -83,7 +83,9 @@
     (def main-data (merge main-data date-map))))
 
 (defn remove-date
-  "This function removes a date from the main-data map.")
+  "This function removes a date from the main-data map."
+  []
+  (print "Delete function needs to be implemented!"))
 
 
 (defn add-entry
