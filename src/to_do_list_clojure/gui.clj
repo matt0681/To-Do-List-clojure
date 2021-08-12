@@ -14,7 +14,7 @@
                         JButton
                         JFrame
                         JTextField
-                        DefaultListModel JPanel)
+                        DefaultListModel JPanel JOptionPane)
            (java.awt Font
                      GridBagConstraints
                      GridBagLayout
@@ -284,30 +284,18 @@
   ;; Action to add an entry to the to-do-list.
   ;; This action is connected to the add entry button.
   (defn add-entry-action []
-    (print "Hello from the add button action.")
+    (let [date (.getText date-text-field)
+          entry (.getText entry-text-field)]
+      (. list-model addElement (str date "  -  " entry))))
 
-    ;(let [date-input ????
-    ;      entry-input ????]
-    ;  ;;(db/add-entry date-input 1 entry-input)
-    ;  (.addElement to-do-list (str date-input "  -  " entry-input))
-    ;  (print (str date-input "  -  " entry-input))
-    ;  )
-    )
-
-  ;;
+  ;; Action which deletes the selected entry from the to-do list.
   (defn delete-entry-action []
+    (. JOptionPane showMessageDialog frame "Proof this button works.")
+
+    ;; Add support for removing items off of the list.
 
     )
 
-  ;;
-  (defn entry-text-field-action []
-
-    )
-
-  ;;
-  (defn date-text-field-action []
-    ;(print (.getText date-text-field))
-    )
 
   ;;;----------------------------------------------------------;;;
   ;;; Creates action listeners for each of the buttons         ;;;
@@ -321,22 +309,12 @@
     (proxy [ActionListener] []
       (actionPerformed [event] (delete-entry-action))))
 
-  (def entry-text-field-listener
-    (proxy [ActionListener] []
-      (actionPerformed [event] (entry-text-field-action))))
-
-  (def date-text-field-listener
-    (proxy [ActionListener] []
-      (actionPerformed [event] (date-text-field-action))))
 
   ;;;----------------------------------------------------------------;;;
   ;;; Adds action listeners to each of the buttons & Text Fields.    ;;;
   ;;;----------------------------------------------------------------;;;
   (.addActionListener add-button add-action-listener)
   (.addActionListener delete-selected-button delete-selected-action-listener)
-  (.addActionListener entry-text-field entry-text-field-listener)
-  (.addActionListener date-text-field date-text-field-listener)
-
 )
 
 
