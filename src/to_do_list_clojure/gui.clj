@@ -286,16 +286,25 @@
   (defn add-entry-action []
     (let [date (.getText date-text-field)
           entry (.getText entry-text-field)]
-      (. list-model addElement (str date "  -  " entry))))
+      (. list-model addElement (str date "  -  " entry))
+      ;; Add this date and entry to the database
+      ))
 
   ;; Action which deletes the selected entry from the to-do list.
   (defn delete-entry-action []
-    (. JOptionPane showMessageDialog frame "Proof this button works.")
+    (. JOptionPane showMessageDialog frame (str (. to-do-list getSelectedIndex)))
+    (let [selected (. to-do-list getSelectedIndex)]
+      (. to-do-list remove selected)))
 
-    ;; Add support for removing items off of the list.
-
-    )
-
+  ;;; Make it a list of double lists
+  ;(() ()
+  ; () ()
+  ; () ()
+  ; () ()
+  ; () ()
+  ; .  .
+  ; .  .
+  ; .  .)
 
   ;;;----------------------------------------------------------;;;
   ;;; Creates action listeners for each of the buttons         ;;;
