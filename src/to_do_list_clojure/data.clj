@@ -33,36 +33,19 @@
   "This function adds a date and entry text to the main-data vector.
   Adds them as strings."
   [date entry]
-  (conj main-data (vector date entry)))
+  (let [temp-main-data main-data]
+    (def main-data (conj temp-main-data (vector date entry)))))
 
 
 (defn remove-entry
   "This function removes a date/entry from the main-data vector."
   [date-entry-text]
-  (let [date (subs date-entry-text 0 10)  ; extract the date from the gui entry
-        entry (subs date-entry-text 15)  ; extract the entry from the gui entry
-        date-entry-vector (vector date entry)
-        (println date-entry-vector)
-        (println main-data)
-        index (.indexOf main-data date-entry-vector)
+  (let [date (subs date-entry-text 0 10)
+        entry (subs date-entry-text 15)
+        vect (vector date entry)
+        index (.indexOf main-data vect)
         temp-main-data main-data]
-    ;; remove date-entry-vector from main-data
-    (println main-data)
-    ;(def main-data (into (subvec temp-main-data 0 index) (subvec temp-main-data (inc index))))
-    (println (into (subvec temp-main-data 0 index) (subvec temp-main-data (inc index))))))
+    (def main-data (into (subvec temp-main-data 0 index) (subvec temp-main-data (inc index))))))
 
-
-;(defn get-entries
-;  "Returns all the entries for a particular date.
-;   Returns as [[importance 'subject'] [importance 'subject'] ...]"
-;  [date-str]
-;  (let [date-millis (first (keys (format-date date-str)))]
-;    (get main-data date-millis)))
-;
-;
-;(defn get-dates-string
-;  "Returns all the dates in main-data in a vector of strings."
-;  []
-;  (vec (map millis-to-date (keys main-data))))
 
 

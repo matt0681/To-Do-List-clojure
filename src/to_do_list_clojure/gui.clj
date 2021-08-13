@@ -150,7 +150,7 @@
   ;; Model for the list
   (def list-model
     (doto (new DefaultListModel)
-      (.addElement "mm/dd/yyyy  -   Example entry.")))
+      (.addElement "mm/dd/yyyy  -  Example entry.")))
 
   ;; Actual list component
   (def to-do-list
@@ -291,20 +291,21 @@
       ;; Ensures the date is in the correct format.
       (if (not= (count (str date)) 10)
         (. JOptionPane showMessageDialog frame "Please use correct date format. mm/dd/yyyy")
-        (. list-model addElement (str date "  -  " entry)))
-      ;; Adds the entry to the database file.
-      (db/add-entry (str date) (str entry))))
+        (do
+          (. list-model addElement (str date "  -  " entry))
+          ;; Adds the entry to the database file.
+          (db/add-entry (str date) (str entry))))))
 
   ;; Action which deletes the selected entry from the to-do list.
   (defn delete-entry-action []
-    (let [selected-index (. to-do-list getSelectedIndex)
-          selected-entry (. list-model elementAt selected-index)]
+    (let [selected-index (. to-do-list getSelectedIndex)]
       ;; Catch an error where nothing is selected/nothing is left.
       (if (= selected-index -1)
         (. JOptionPane showMessageDialog frame "Please select an entry to be deleted.")
-        (. list-model remove selected-index))
-      ;; Deletes this date and entry from the database
-      (db/remove-entry selected-entry)))
+        (let [selected-entry (. list-model elementAt selected-index)]
+          (. list-model remove selected-index)
+          ;; Deletes this date and entry from the database
+          (db/remove-entry selected-entry)))))
 
   ;;;----------------------------------------------------------;;;
   ;;; Creates action listeners for each of the buttons         ;;;
