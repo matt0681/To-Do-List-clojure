@@ -288,29 +288,23 @@
   (defn add-entry-action []
     (let [date (.getText date-text-field)
           entry (.getText entry-text-field)]
-      (. list-model addElement (str date "  -  " entry))
-      ;; Add this date and entry to the database
-      ))
+      ;; Ensures the date is in the correct format.
+      (if (not= (count (str date)) 10)
+        (. JOptionPane showMessageDialog frame "Please use correct date format. mm/dd/yyyy")
+        (. list-model addElement (str date "  -  " entry)))
+      ;; Adds the entry to the database file.
+      (db/add-entry (str date) (str entry))))
 
   ;; Action which deletes the selected entry from the to-do list.
   (defn delete-entry-action []
-    (let [selected (. to-do-list getSelectedIndex)]
+    (let [selected-index (. to-do-list getSelectedIndex)
+          selected-entry (. list-model elementAt selected-index)]
       ;; Catch an error where nothing is selected/nothing is left.
-      (if (= selected -1)
+      (if (= selected-index -1)
         (. JOptionPane showMessageDialog frame "Please select an entry to be deleted.")
-        (. list-model remove selected))
+        (. list-model remove selected-index))
       ;; Deletes this date and entry from the database
-      ))
-
-  ;;; Make it a list of double lists
-  ;(() ()
-  ; () ()
-  ; () ()
-  ; () ()
-  ; () ()
-  ; .  .
-  ; .  .
-  ; .  .)
+      (db/remove-entry selected-entry)))
 
   ;;;----------------------------------------------------------;;;
   ;;; Creates action listeners for each of the buttons         ;;;
