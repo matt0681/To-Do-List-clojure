@@ -14,7 +14,9 @@
                         JButton
                         JFrame
                         JTextField
-                        DefaultListModel JPanel JOptionPane)
+                        DefaultListModel
+                        JPanel
+                        JOptionPane)
            (java.awt Font
                      GridBagConstraints
                      GridBagLayout
@@ -292,9 +294,13 @@
 
   ;; Action which deletes the selected entry from the to-do list.
   (defn delete-entry-action []
-    (. JOptionPane showMessageDialog frame (str (. to-do-list getSelectedIndex)))
     (let [selected (. to-do-list getSelectedIndex)]
-      (. to-do-list remove selected)))
+      ;; Catch an error where nothing is selected/nothing is left.
+      (if (= selected -1)
+        (. JOptionPane showMessageDialog frame "Please select an entry to be deleted.")
+        (. list-model remove selected))
+      ;; Deletes this date and entry from the database
+      ))
 
   ;;; Make it a list of double lists
   ;(() ()
